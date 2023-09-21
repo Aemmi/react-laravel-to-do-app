@@ -2,8 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TodoList from './components/TodoList';
 import Header from './components/Header';
+import { setDocumentTitle } from './utils/setDocumentTitle';
 
 function Dashboard() {
+
+    useEffect(() => {
+        setDocumentTitle('User Dashboard | Manage Todos');
+    }, []);
+
     const [form, setForm] = useState({
         title: "",
         description: "",
