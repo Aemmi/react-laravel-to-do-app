@@ -29,7 +29,7 @@ function Login() {
         };
         axios.post('/api/auth/login', credentials)
         .then(response => {
-            if (response.data.status === 'success') {
+            if (response.data.status == 'success') {
                 localStorage.setItem('token', response.data.token);
                 location.assign('/dashboard');
             } else {

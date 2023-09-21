@@ -63,10 +63,17 @@ class AuthController extends Controller
             $user->api_token = $token;
             $user->save();
 
-            return response()->json(['status' => 'success', 'message' => 'Login successful', 'token' => $token], 200);
+            $data['status'] = 'success';
+            $data['message'] = 'Login successful';
+            $data['token'] = $token;
+
+            return response()->json($data);
         }
 
-        return response()->json(['status' => 'failed', 'message' => 'Either the email or password is not correct. Try again...'], 400);
+        $data['status'] = 'failed';
+        $data['message'] = 'Either the email or password is not correct. Try again...';
+
+        return response()->json($data);
     }
 
     public function user()
