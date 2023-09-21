@@ -1,7 +1,12 @@
-import react, {useState} from 'react';
+import react, {useState, useEffect} from 'react';
 import axios from 'axios';
+import { setDocumentTitle } from './utils/setDocumentTitle';
 
 function Register() {
+
+    useEffect(() => {
+        setDocumentTitle('User Signup | Welcome to ToDo');
+    }, []);
 
     const [form, setForm] = useState({
         email: "",
@@ -78,20 +83,20 @@ function Register() {
 
                         <div className="row mb-3">
                             <label className="col-sm-2 col-form-label">Email</label>
-                            <div class="col-sm-10">
+                            <div className="col-sm-10">
                             <input type="email" name="email" onChange={handleChange} className="form-control" id="email"/>
                             </div>
                         </div>
                         <div className="row mb-3">
                             <label className="col-sm-2 col-form-label">Name</label>
-                            <div class="col-sm-10">
+                            <div className="col-sm-10">
                             <input type="text" name="name" onChange={handleChange} className="form-control" id="name"/>
                             <i className="text-warning" id="name-error"></i>
                             </div>
                         </div>
                         <div className="row mb-3">
                             <label className="col-sm-2 col-form-label">Password</label>
-                            <div class="col-sm-10">
+                            <div className="col-sm-10">
                             <input type="password" name="password" onChange={handleChange} className="form-control" id="password"/>
                             </div>
                         </div>

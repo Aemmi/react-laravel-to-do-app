@@ -80,10 +80,22 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        // Revoke the user's access token
-        $request->user()->currentAccessToken()->delete();
+        if (Auth::check()) {
+            $user = $request->user();
 
-        return response()->json(['message' => 'Logged out successfully']);
+            // Check if the user has an api_token
+            if ($user->api_token) {
+                // Clear the user's api_token
+                $user->api_token = null;
+                $user->save();
+            } else {
+                return response()->json(['message' => 'User does not have a valid access token'], 400);
+            }
+
+            return response()->json(['message' => 'Logged out successfully']);
+        } else {
+            return response()->json(['message' => 'User is not authenticated'], 401);
+        }
 
     }
 }

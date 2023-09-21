@@ -1,7 +1,12 @@
-import react, {useState} from 'react';
+import react, {useState, useEffect} from 'react';
 import axios from 'axios';
+import { setDocumentTitle } from './utils/setDocumentTitle';
 
 function Login() {
+
+    useEffect(() => {
+        setDocumentTitle('User Dashboard | Manage Todos');
+    }, []);
 
     const [form, setForm] = useState({
         email: "",
@@ -49,13 +54,13 @@ function Login() {
 
                         <div className="row mb-3">
                             <label className="col-sm-3 col-form-label">Email</label>
-                            <div class="col-sm-9">
+                            <div className="col-sm-9">
                             <input type="email" name="email" onChange={handleChange} value={form.email} className="form-control" id="inputEmail3"/>
                             </div>
                         </div>
                         <div className="row mb-3">
                             <label className="col-sm-3 col-form-label">Password</label>
-                            <div class="col-sm-9">
+                            <div className="col-sm-9">
                             <input type="password" name="password" onChange={handleChange} value={form.password} className="form-control" id="inputPassword3"/>
                             </div>
                         </div>
