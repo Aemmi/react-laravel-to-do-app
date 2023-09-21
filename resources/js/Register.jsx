@@ -72,7 +72,9 @@ function Register() {
             <div className="row my-5">
                 <div className="col-md-8 p-3 mt-4 m-auto">
                     <div className='container'>
-                        <h4 className='text-center'>User Register</h4>
+
+                        <h2 className='text-center'>Welcome to your ToDo App</h2>
+                        <h4 className='text-center'>Kindly register to continue...</h4>
 
                         <div className="row mb-3">
                             <label className="col-sm-2 col-form-label">Email</label>
@@ -105,7 +107,7 @@ function Register() {
 
                     </div>
                     <div className='row text-center p-3'>
-                        <a href='/login'>Login here</a>
+                        <a href='/login'>Already registered? Click here to Login</a>
                     </div>
                 </div>
             </div>

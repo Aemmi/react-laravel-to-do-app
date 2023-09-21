@@ -44,7 +44,8 @@ function Login() {
             <div className="row my-5">
                 <div className="col-md-8 p-3 mt-4 m-auto">
                     <div className='container'>
-                        <h4 className='text-center'>User Login</h4>
+                        <h2 className='text-center'>Welcome to your ToDo App</h2>
+                        <h4 className='text-center'>Kindly Login</h4>
 
                         <div className="row mb-3">
                             <label className="col-sm-3 col-form-label">Email</label>
@@ -63,7 +64,7 @@ function Login() {
 
                     </div>
                     <div className='row text-center p-3'>
-                        <a href='/register'>Register here</a>
+                        <a href='/register'>Not registered? Click here to register</a>
                     </div>
                 </div>
             </div>

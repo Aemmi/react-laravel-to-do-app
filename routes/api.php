@@ -14,14 +14,17 @@ use App\Http\Controllers\AuthController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::prefix('todos')->group(function () {
-    Route::get('/', [TodoController::class, 'index']); // Get all todos
-    Route::post('/', [TodoController::class, 'store']); // Create a new todo
-    Route::get('/{id}', [TodoController::class, 'show']); // Get a specific todo
-    Route::put('/{id}', [TodoController::class, 'update']); // Update a specific todo
-    Route::delete('/{id}', [TodoController::class, 'destroy']); // Delete a specific todo
+Route::middleware('auth:api')->group(function () {
+    // Protected routes go here
+    Route::prefix('todos')->group(function () {
+        Route::get('/', [TodoController::class, 'index']); // Get all todos
+        Route::post('/', [TodoController::class, 'store']); // Create a new todo
+        Route::get('/{id}', [TodoController::class, 'show']); // Get a specific todo
+        Route::put('/{id}', [TodoController::class, 'update']); // Update a specific todo
+        Route::delete('/{id}', [TodoController::class, 'destroy']); // Delete a specific todo
+    });
 });
+
 
 Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);

@@ -1,12 +1,9 @@
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.js';
-
 import Header from './components/Header';
 
 function NotFound() {
     return (
         <div>
-
+            <Header/>
             <div className="row my-5">
                 <div className="col-md-8 p-3 mt-4 m-auto">
                     <div className='container'>
