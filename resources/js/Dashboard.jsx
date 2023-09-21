@@ -9,7 +9,7 @@ function Dashboard() {
         description: "",
     });
 
-    const [todos, setTodos] = useState([]); // State to store todos
+    const [todos, setTodos] = useState([]);
 
     const handleChange = (evt) => {
         const value = evt.target.type === "checkbox" ? evt.target.checked : evt.target.value;
@@ -34,10 +34,8 @@ function Dashboard() {
                 console.log(response.data.message);
                 // Handle the successful response data
                 if (response.data.status == 'success') {
-                    // Update the todos state with the newly added todo
                     setTodos([...todos, response.data.todo]);
-                    // Clear the form fields if needed
-                    // setForm({ title: "", description: "" });
+                    setForm({ title: "", description: "" });
                 } else {
                     alert(response.data.message);
                 }
