@@ -50,7 +50,11 @@ class TodoController extends Controller
         $todo->description = $request->input('description');
         $todo->save();
 
-        return response()->json($todo);
+        $data['status'] = 'success';
+        $data['messsage'] = 'Todo edited successfully';
+        $data['todo'] = $todo;
+
+        return response()->json($data);
     }
 
     public function destroy($id)
