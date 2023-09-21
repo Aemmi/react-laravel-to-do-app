@@ -30,9 +30,7 @@ function Login() {
         axios.post('/api/auth/login', credentials)
         .then(response => {
             if (response.data.status === 'success') {
-                // Store the token in local storage
                 localStorage.setItem('token', response.data.token);
-                // Redirect to the dashboard or perform other actions as needed
                 location.assign('/dashboard');
             } else {
                 alert(response.data.message);
