@@ -3,7 +3,7 @@ import handleLogout from "../config/Logout";
 function Header()
 {
     var isLoggedIn = false;
-    if(validateUser){
+    if(validateUser == true){
         isLoggedIn = true;
     }else{
         isLoggedIn = false;

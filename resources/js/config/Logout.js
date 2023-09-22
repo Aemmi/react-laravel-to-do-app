@@ -7,6 +7,7 @@ function Logout()
     // Fetch todos when the component mounts
     axios.post('/api/todos/logout')
     .then(response => {
+        localStorage.removeItem('token');
         location.assign('/')
     })
     .catch(error => {
