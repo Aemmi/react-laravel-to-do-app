@@ -96,8 +96,8 @@ function Dashboard() {
                     </div>
                 </div>
                 <div className="col-md-8 p-3 mt-4">
-                    <h2>My Todos</h2>
                     <div className='container'>
+                        <h2>My Todos</h2>
                         <div className='row table-responsive'>
 
                             <TodoList todos={todos} />

@@ -44,14 +44,18 @@ class TodoController extends Controller
     public function update(Request $request, $id)
     {
         $user = Auth::user();
-        // Update a specific todo
         $todo = Todo::findOrFail($id);
         $todo->title = $request->input('title');
         $todo->description = $request->input('description');
+
+        if($request->input('completed')){
+            $todo->completed = $request->completed;
+        }
+
         $todo->save();
 
         $data['status'] = 'success';
-        $data['messsage'] = 'Todo edited successfully';
+        $data['message'] = 'Todo edited successfully';
         $data['todo'] = $todo;
 
         return response()->json($data);

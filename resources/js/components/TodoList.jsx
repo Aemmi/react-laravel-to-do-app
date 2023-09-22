@@ -26,6 +26,18 @@ function TodoList({ todos }) {
     }
   };
 
+  const handleToggleComplete = async (todo) => {
+    try {
+      const updatedTodo = { ...todo, completed: todo.completed == '1' ? '0' : '1' };
+      await axios.put(`/api/todos/${todo.id}`, updatedTodo);
+      setTodoList((prevTodos) =>
+        prevTodos.map((t) => (t.id === updatedTodo.id ? updatedTodo : t))
+      );
+    } catch (error) {
+      console.error('Error updating todo:', error);
+    }
+  };
+
   const handleCancelEdit = () => {
     setEditingTodo(null);
   };
@@ -55,6 +67,7 @@ function TodoList({ todos }) {
               <th>ID</th>
               <th>Title</th>
               <th>Description</th>
+              <th>Completed</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -64,9 +77,9 @@ function TodoList({ todos }) {
                 <td colSpan="4">No todos found</td>
               </tr>
             ) : (
-              todoList.map((todo) => (
+              todoList.map((todo, index) => (
                 <tr key={todo.id}>
-                  <td>{todo.id}</td>
+                  <td>{index + 1}</td>
                   <td>
                     {editingTodo && editingTodo.id === todo.id ? (
                       <input
@@ -98,6 +111,13 @@ function TodoList({ todos }) {
                     ) : (
                       todo.description
                     )}
+                  </td>
+                  <td>
+                  <input
+                        type="checkbox"
+                        checked={todo.completed == '1'}
+                        onChange={() => handleToggleComplete(todo)}
+                    />
                   </td>
                   <td>
                     {editingTodo && editingTodo.id === todo.id ? (
