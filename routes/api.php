@@ -22,6 +22,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}', [TodoController::class, 'show']); // Get a specific todo
         Route::put('/{id}', [TodoController::class, 'update']); // Update a specific todo
         Route::delete('/{id}', [TodoController::class, 'destroy']); // Delete a specific todo
+        Route::post('/reorder', [TodoController::class, 'order']); // reorder todos
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 });

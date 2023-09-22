@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 function TodoList({ todos }) {
   const [loading, setLoading] = useState(true);
@@ -56,11 +57,32 @@ function TodoList({ todos }) {
     }
   };
 
+  const onDragEnd = async (result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const reorderedTodos = Array.from(todoList);
+    const [movedTodo] = reorderedTodos.splice(result.source.index, 1);
+    reorderedTodos.splice(result.destination.index, 0, movedTodo);
+
+    setTodoList(reorderedTodos);
+
+    try {
+        const updatedOrder = reorderedTodos.map((todo) => todo.id);
+        // Send an API request to update the order in the backend
+        await axios.post('/api/todos/reorder', { order: updatedOrder });
+      } catch (error) {
+        console.error('Error updating todo order:', error);
+      }
+  };
+
   return (
     <div>
       {loading ? (
         <p>Loading...</p>
       ) : (
+        <DragDropContext onDragEnd={onDragEnd}>
         <table className="table table-stripped table-sm">
           <thead>
             <tr>
@@ -71,80 +93,97 @@ function TodoList({ todos }) {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
-            {todoList.length === 0 ? (
-              <tr>
-                <td colSpan="4">No todos found</td>
-              </tr>
-            ) : (
-              todoList.map((todo, index) => (
-                <tr key={todo.id}>
-                  <td>{index + 1}</td>
-                  <td>
-                    {editingTodo && editingTodo.id === todo.id ? (
-                      <input
-                        type="text"
-                        value={editingTodo.title}
-                        onChange={(e) =>
-                          setEditingTodo({
-                            ...editingTodo,
-                            title: e.target.value,
-                          })
-                        }
-                      />
-                    ) : (
-                      todo.title
-                    )}
-                  </td>
-                  <td>
-                    {editingTodo && editingTodo.id === todo.id ? (
-                      <input
-                        type="text"
-                        value={editingTodo.description}
-                        onChange={(e) =>
-                          setEditingTodo({
-                            ...editingTodo,
-                            description: e.target.value,
-                          })
-                        }
-                      />
-                    ) : (
-                      todo.description
-                    )}
-                  </td>
-                  <td>
-                  <input
-                        type="checkbox"
-                        checked={todo.completed == '1'}
-                        onChange={() => handleToggleComplete(todo)}
-                    />
-                  </td>
-                  <td>
-                    {editingTodo && editingTodo.id === todo.id ? (
-                      <>
-                        <button onClick={() => handleSaveEdit(editingTodo)} className="btn btn-success">
-                          Save
-                        </button>
-                        <button onClick={handleCancelEdit} className="btn btn-secondary">
-                          Cancel
-                        </button>
-                      </>
-                    ) : (
-                      <div className="btn-group">
-                        <button onClick={() => handleEditClick(todo)} className="btn btn-primary">
-                          <i className='fa fa-pencil'></i>
-                        </button>
-                        <button onClick={() => handleDeleteClick(todo)} className="btn btn-danger">
-                        <i className='fa fa-trash'></i>
-                        </button>
-                      </div>
-                    )}
-                  </td>
+          <Droppable droppableId="todos">
+              {(provided) => (
+                <tbody {...provided.droppableProps} ref={provided.innerRef}>
+                {todoList.length === 0 ? (
+                <tr>
+                    <td colSpan="4">No todos found</td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+                ) : (
+                todoList.map((todo, index) => (
+                    <Draggable
+                        key={todo.id.toString()}
+                        draggableId={todo.id.toString()}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <tr
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                            >
+                            <td>{index + 1}</td>
+                            <td>
+                                {editingTodo && editingTodo.id === todo.id ? (
+                                <input
+                                    type="text"
+                                    value={editingTodo.title}
+                                    onChange={(e) =>
+                                    setEditingTodo({
+                                        ...editingTodo,
+                                        title: e.target.value,
+                                    })
+                                    }
+                                />
+                                ) : (
+                                todo.title
+                                )}
+                            </td>
+                            <td>
+                                {editingTodo && editingTodo.id === todo.id ? (
+                                <input
+                                    type="text"
+                                    value={editingTodo.description}
+                                    onChange={(e) =>
+                                    setEditingTodo({
+                                        ...editingTodo,
+                                        description: e.target.value,
+                                    })
+                                    }
+                                />
+                                ) : (
+                                todo.description
+                                )}
+                            </td>
+                            <td>
+                            <input
+                                    type="checkbox"
+                                    checked={todo.completed == '1'}
+                                    onChange={() => handleToggleComplete(todo)}
+                                />
+                            </td>
+                            <td>
+                                {editingTodo && editingTodo.id === todo.id ? (
+                                <>
+                                    <button onClick={() => handleSaveEdit(editingTodo)} className="btn btn-success">
+                                    Save
+                                    </button>
+                                    <button onClick={handleCancelEdit} className="btn btn-secondary">
+                                    Cancel
+                                    </button>
+                                </>
+                                ) : (
+                                <div className="btn-group">
+                                    <button onClick={() => handleEditClick(todo)} className="btn btn-primary">
+                                    <i className='fa fa-pencil'></i>
+                                    </button>
+                                    <button onClick={() => handleDeleteClick(todo)} className="btn btn-danger">
+                                    <i className='fa fa-trash'></i>
+                                    </button>
+                                    </div>
+                              )}
+                            </td>
+                          </tr>
+                        )}
+                      </Draggable>
+                    ))
+                  )}
+                </tbody>
+              )}
+            </Droppable>
+          </table>
+        </DragDropContext>
       )}
     </div>
   );

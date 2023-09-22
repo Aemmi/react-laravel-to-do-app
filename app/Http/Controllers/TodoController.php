@@ -12,7 +12,7 @@ class TodoController extends Controller
     {
         $user = Auth::user();
         // Retrieve all todos
-        $todos = Todo::where('user_id', $user->id)->latest()->get();
+        $todos = Todo::where('user_id', $user->id)->orderBy('order', 'asc')->get();
         return response()->json($todos);
     }
 
@@ -61,9 +61,23 @@ class TodoController extends Controller
         return response()->json($data);
     }
 
+    public function order(Request $request)
+    {
+        $order = $request->order;
+
+        foreach ($order as $index => $todoId) {
+            $todo = Todo::find($todoId);
+            if ($todo) {
+                $todo->order = $index + 1;
+                $todo->save();
+            }
+        }
+
+        return response()->json(['message' => 'Todos reordered successfully']);
+    }
+
     public function destroy($id)
     {
-        $user = Auth::user();
         // Delete a specific todo
         $todo = Todo::findOrFail($id);
         $todo->delete();
